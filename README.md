@@ -127,12 +127,11 @@ O projeto é organizado em módulos para facilitar a manutenção e escalabilida
 ### Rotas Principais
 
 - **GET /alive**: Verificação de serviço disponível.
-- **POST /auth/register**: Cadastro de usuário.
-- **POST /auth/login**: Login e geração de token JWT.
+- **POST /users**: Cadastro de usuário.
 - **GET /users**: Retorna todos os usuários cadastrados.
-- **GET /users/profile**: Retorna informações do usuário logado.
 - **PUT /users/profile**: Atualiza o perfil do usuário logado.
 - **DELETE /users/<id_do_usuário>**: Remove o cadastro do usuário (Apenas usuários com a role Admin).
+- **POST /auth/login**: Login e geração de token JWT.
 - **POST /auth/forgot-password**: Envia e-mail para recuperação de senha.
 - **POST /auth/reset-password**: Redefinição de senha via token.
 

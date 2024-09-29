@@ -23,16 +23,19 @@ export class UserController {
   }
 
   @Get()
+  @ApiOperation({ summary: 'List all users' })
   findAll() {
     return this.userService.findAll();
   }
 
   @Patch(':id')
+  @ApiOperation({ summary: 'Update user' })
   update(@Param('id') id: string, @Body() body: UpdateUserDto) {
     return this.userService.update(id, body);
   }
 
   @Delete(':id')
+  @ApiOperation({ summary: 'Remove user' })
   remove(@Param('id') id: string) {
     return this.userService.remove(id);
   }

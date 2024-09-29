@@ -95,6 +95,8 @@ DATABASE_NAME=nome_do_banco
 JWT_SECRET=sua_chave_secretal
 ```
 
+Para gerar o **JWT_SECRET** você pode utilizar o comando: `openssl rand -base64 32`
+
 4. Execute as migrações do banco de dados:
 
 ```bash

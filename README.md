@@ -65,10 +65,10 @@ Este projeto implementa um sistema de login seguro utilizando **NestJS**. O sist
 
 ### Pré-requisitos
 
-- Node.js v20.17.0 ou superior
-- Pnpm 9.11.0 ou superior
-- NestJS CLI
-- PostgreSQL ou MySQL
+- Node.js v20.17.0
+- Pnpm v9.11.0
+- DockerCompose v1.27.4
+- NestJS CLI v10.4.5
 
 ### Passos para Instalação
 

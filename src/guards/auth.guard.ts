@@ -28,8 +28,8 @@ export class AuthGuard implements CanActivate {
 
     if (isPublic) return true;
 
-    const { headers } = context.switchToHttp().getRequest();
-    const { authorization } = headers;
+    const request = context.switchToHttp().getRequest();
+    const { authorization } = request.headers;
     if (authorization) {
       const authSplited = authorization.split(' ');
 
@@ -39,7 +39,8 @@ export class AuthGuard implements CanActivate {
       const jwt = authSplited[1];
 
       try {
-        this.authService.checkToken(jwt);
+        const data = this.authService.checkToken(jwt);
+        request.user = data;
         return true;
       } catch (error) {
         throw new UnauthorizedException(

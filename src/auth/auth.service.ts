@@ -26,8 +26,14 @@ export class AuthService {
     if (!validPassword)
       throw new UnauthorizedException('E-mail e/ou senha incorretos.');
 
-    const { id, name, email, role } = user;
-    const accessToken = this.jwtService.sign({ sub: id, name, email, role });
+    const accessToken = this.jwtService.sign({
+      sub: user.id,
+      name: user.name,
+      email: user.email,
+      role: user.role,
+      createdAt: user.createdAt,
+      updatedAt: user.createdAt,
+    });
     return { accessToken };
   }
 }

@@ -11,6 +11,8 @@ import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { ApiOperation } from '@nestjs/swagger';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { UserRole } from 'src/decorators/role.decorator';
+import { Role } from '@prisma/client';
 
 @Controller({ version: '1', path: 'users' })
 export class UserController {
@@ -23,6 +25,7 @@ export class UserController {
   }
 
   @Get()
+  @UserRole(Role.ADMIN)
   @ApiOperation({ summary: 'List all users' })
   findAll() {
     return this.userService.findAll();

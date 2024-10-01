@@ -4,6 +4,7 @@ import { PrismaService } from 'src/database/prisma.service';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 import { TokenData } from './entities/auth.entity';
+import { ResetPasswordDto } from './dto/reset-password.dto';
 
 @Injectable()
 export class AuthService {
@@ -31,9 +32,26 @@ export class AuthService {
       name: user.name,
       email: user.email,
       role: user.role,
-      createdAt: user.createdAt,
-      updatedAt: user.createdAt,
     });
     return { accessToken };
+  }
+
+  async resetPassword(
+    id: string,
+    body: ResetPasswordDto,
+  ): Promise<{ message: string }> {
+    const user = await this.prismaService.user.findUnique({ where: { id } });
+    if (!user) throw new UnauthorizedException('Senha incorreta.');
+
+    const validPassword = await bcrypt.compare(body.password, user.password);
+    if (!validPassword) throw new UnauthorizedException('Senha incorreta.');
+
+    const encryptPassword = await bcrypt.hash(body.newPassword, 10);
+    await this.prismaService.user.update({
+      where: { id },
+      data: { password: encryptPassword },
+    });
+
+    return { message: 'Senha alterada com sucesso.' };
   }
 }

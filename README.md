@@ -130,19 +130,20 @@ O projeto é organizado em módulos para facilitar a manutenção e escalabilida
 
 - **GET /alive**: Verificação de serviço disponível.
 - **POST /users**: Cadastro de usuário.
-- **GET /users**: Retorna todos os usuários cadastrados.
-- **PUT /users/profile**: Atualiza o perfil do usuário logado.
-- **DELETE /users/<id_do_usuário>**: Remove o cadastro do usuário (Apenas usuários com a role Admin).
+- **GET /users**: Retorna todos os usuários cadastrados (Apenas usuários ADMIN).
+- **GET /users/profile**: Retorna os dados do usuário autenticado.
+- **PATCH /users/profile**: Atualiza os dados do usuário autenticado.
+- **DELETE /users/profile**: Remove o cadastro do usuário autenticado.
 - **POST /auth/login**: Login e geração de token JWT.
 - **POST /auth/forgot-password**: Envia e-mail para recuperação de senha.
-- **POST /auth/reset-password**: Redefinição de senha via token.
+- **POST /auth/reset-password**: Alteração de senha.
 
 ## Segurança
 
 - **Hashing de Senhas**: As senhas são armazenadas utilizando `bcrypt`.
 - **Autenticação JWT**: As rotas protegidas utilizam tokens JWT para autenticação.
 - **Guards e Middleware**:
-  - `JwtAuthGuard`: Protege rotas que exigem autenticação.
+  - `AuthGuard`: Protege rotas que exigem autenticação.
   - `RolesGuard`: Assegura que usuários com permissões adequadas possam acessar rotas específicas.
 - **Boas Práticas de Segurança**:
   - Proteção contra ataques de força bruta (rate-limiting).

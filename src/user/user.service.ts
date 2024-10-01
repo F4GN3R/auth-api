@@ -27,6 +27,15 @@ export class UserService {
     });
   }
 
+  async findMe(id: string): Promise<Partial<User>> {
+    const user = await this.prismaService.user.findUnique({
+      omit: { password: true },
+      where: { id },
+    });
+    if (!user) throw new NotFoundException('Usuário não encontrado.');
+    return user;
+  }
+
   async findAll(): Promise<Partial<User>[]> {
     return await this.prismaService.user.findMany({ omit: { password: true } });
   }

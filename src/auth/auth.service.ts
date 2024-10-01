@@ -3,6 +3,7 @@ import { LoginDto } from './dto/login.dto';
 import { PrismaService } from 'src/database/prisma.service';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
+import { TokenData } from './entities/auth.entity';
 
 @Injectable()
 export class AuthService {
@@ -10,6 +11,10 @@ export class AuthService {
     private readonly prismaService: PrismaService,
     private readonly jwtService: JwtService,
   ) {}
+
+  checkToken(token: string): TokenData {
+    return this.jwtService.verify(token);
+  }
 
   async login(body: LoginDto): Promise<{ accessToken: string }> {
     const user = await this.prismaService.user.findUnique({

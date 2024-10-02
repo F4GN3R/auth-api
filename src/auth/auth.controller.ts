@@ -1,6 +1,6 @@
 import { Controller, Post, Body, Patch } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { ApiOperation } from '@nestjs/swagger';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { IsPublic } from 'src/decorators/is-public.decorator';
 import { LoggedUser } from 'src/decorators/logged-user.decorator';
 import { UpdatePasswordDto } from './dto/update-password.dto';
@@ -8,6 +8,7 @@ import { AccountRecoveryDto } from './dto/account-recovery.dto';
 import { SingInDto } from './dto/sign-in.dto';
 import { ResetPasswordDto } from './dto/reset-password.dto';
 
+@ApiTags('Autenticação')
 @Controller({ version: '1', path: 'auth' })
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
@@ -29,7 +30,10 @@ export class AuthController {
   }
 
   @Patch('update-password')
-  @ApiOperation({ summary: 'Alterar senha' })
+  @ApiOperation({
+    summary: 'Alterar senha',
+    description: 'Essa operação só pode ser feita pelo usuário logado.',
+  })
   async updatePassword(
     @LoggedUser() id: string,
     @Body() body: UpdatePasswordDto,

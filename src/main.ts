@@ -5,6 +5,7 @@ import {
   ValidationPipe,
   VersioningType,
 } from '@nestjs/common';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -26,6 +27,15 @@ async function bootstrap() {
       },
     }),
   );
+
+  const config = new DocumentBuilder()
+    .setTitle('Swagger Auth API')
+    .setDescription('API para autenticação e controle de acesso de usuários.')
+    .setVersion('1.0.0')
+    .addBearerAuth()
+    .build();
+  const document = SwaggerModule.createDocument(app, config);
+  SwaggerModule.setup('documentation', app, document);
 
   await app.listen(process.env.PORT || 3333, () =>
     console.log('🚀 Server is running in port 3333...'),

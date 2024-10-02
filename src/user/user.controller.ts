@@ -8,7 +8,7 @@ import { Role } from '@prisma/client';
 import { LoggedUser } from 'src/decorators/logged-user.decorator';
 import { IsPublic } from 'src/decorators/is-public.decorator';
 
-@Controller({ version: '1', path: 'users' })
+@Controller({ version: '1', path: 'user' })
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
@@ -19,26 +19,26 @@ export class UserController {
     return this.userService.create(body);
   }
 
-  @Get('profile')
+  @Get()
   @ApiOperation({ summary: 'List logged user data' })
   findMe(@LoggedUser() id: string) {
     return this.userService.findMe(id);
   }
 
-  @Get()
+  @Get('list-all')
   @UserRole(Role.ADMIN)
   @ApiOperation({ summary: 'List all users' })
   findAll() {
     return this.userService.findAll();
   }
 
-  @Patch('profile')
+  @Patch()
   @ApiOperation({ summary: 'Update logged user data' })
   update(@LoggedUser() id: string, @Body() body: UpdateUserDto) {
     return this.userService.update(id, body);
   }
 
-  @Delete('profile')
+  @Delete()
   @ApiOperation({ summary: 'Remove logged user' })
   remove(@LoggedUser() id: string) {
     return this.userService.remove(id);

@@ -6,6 +6,6 @@ services:
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: 321654
-      POSTGRES_DB: login-flow
+      POSTGRES_DB: auth-api
     ports:
       - '6500:5432'

@@ -1,10 +1,18 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { LoginDto } from './dto/login.dto';
+import {
+  BadRequestException,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { PrismaService } from 'src/database/prisma.service';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
-import { TokenData } from './entities/auth.entity';
+import { Auth, TokenData } from './entities/auth.entity';
+import { randomUUID } from 'crypto';
+import { AccountRecoveryDto } from './dto/account-recovery.dto';
+import { UpdatePasswordDto } from './dto/update-password.dto';
+import { SingInDto } from './dto/sign-in.dto';
 import { ResetPasswordDto } from './dto/reset-password.dto';
+import { User } from '@prisma/client';
 
 @Injectable()
 export class AuthService {
@@ -17,7 +25,12 @@ export class AuthService {
     return this.jwtService.verify(token);
   }
 
-  async login(body: LoginDto): Promise<{ accessToken: string }> {
+  generateJwt(user: User): string {
+    const { id, name, email, role } = user;
+    return this.jwtService.sign({ sub: id, name, email, role });
+  }
+
+  async singIn(body: SingInDto): Promise<Auth> {
     const user = await this.prismaService.user.findUnique({
       where: { email: body.email },
     });
@@ -27,18 +40,15 @@ export class AuthService {
     if (!validPassword)
       throw new UnauthorizedException('E-mail e/ou senha incorretos.');
 
-    const accessToken = this.jwtService.sign({
-      sub: user.id,
-      name: user.name,
-      email: user.email,
-      role: user.role,
-    });
-    return { accessToken };
+    return {
+      accessToken: this.generateJwt(user),
+      message: 'Usuário autenticado com sucesso.',
+    };
   }
 
-  async resetPassword(
+  async updatePassword(
     id: string,
-    body: ResetPasswordDto,
+    body: UpdatePasswordDto,
   ): Promise<{ message: string }> {
     const user = await this.prismaService.user.findUnique({ where: { id } });
     if (!user) throw new UnauthorizedException('Senha incorreta.');
@@ -53,5 +63,56 @@ export class AuthService {
     });
 
     return { message: 'Senha alterada com sucesso.' };
+  }
+
+  async accountRecovery(
+    body: AccountRecoveryDto,
+  ): Promise<{ message: string }> {
+    const user = await this.prismaService.user.findUnique({
+      where: { email: body.email },
+    });
+
+    if (user) {
+      const recoveryHash = randomUUID();
+      const dateExpiration = new Date();
+      dateExpiration.setHours(dateExpiration.getHours() + 1);
+
+      await Promise.all([
+        this.prismaService.user.update({
+          where: { id: user.id },
+          data: {
+            recoveryHash,
+            dateExpirationRecoveryHash: dateExpiration,
+          },
+        }),
+        // this.mailService.sendMailRecoverPassword(user, recoveryHash),
+      ]);
+    }
+
+    return {
+      message: `Caso o e-mail esteja cadastrado, você receberá uma mensagem em ${body.email} com as instruções para definir uma nova senha.`,
+    };
+  }
+
+  async resetPassword(body: ResetPasswordDto): Promise<Auth> {
+    const user = await this.prismaService.user.findUnique({
+      where: { recoveryHash: body.hash },
+    });
+
+    if (!user) throw new BadRequestException('Link de recuperação inválido.');
+
+    if (user.dateExpirationRecoveryHash <= new Date())
+      throw new BadRequestException('Link de recuperação expirado.');
+
+    const encryptPassword = await bcrypt.hash(body.password, 10);
+    await this.prismaService.user.update({
+      where: { id: user.id },
+      data: { password: encryptPassword },
+    });
+
+    return {
+      accessToken: this.generateJwt(user),
+      message: 'Senha alterada com sucesso.',
+    };
   }
 }

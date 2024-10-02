@@ -2,7 +2,7 @@ import {
   ExecutionContext,
   Injectable,
   CanActivate,
-  UnauthorizedException,
+  ForbiddenException,
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { Role } from '@prisma/client';
@@ -22,7 +22,7 @@ export class RoleGuard implements CanActivate {
     if (role) {
       const { user } = context.switchToHttp().getRequest();
       if (role === user.role) return true;
-      throw new UnauthorizedException(
+      throw new ForbiddenException(
         'Você não tem autorização para realizar essa operação.',
       );
     }

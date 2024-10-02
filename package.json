@@ -1,5 +1,5 @@
 {
-  "name": "login-flow",
+  "name": "auth-api",
   "version": "1.0.0",
   "description": "This project implements a secure login system using NestJS. The system offers registration features, authentication via email/password, generation of JWT tokens, role-based access control and password encryption.",
   "author": "Fagner Morais",

@@ -13,12 +13,14 @@ import { UpdatePasswordDto } from './dto/update-password.dto';
 import { SingInDto } from './dto/sign-in.dto';
 import { ResetPasswordDto } from './dto/reset-password.dto';
 import { User } from '@prisma/client';
+import { MailerSendService } from 'src/mailersend/mailersend.service';
 
 @Injectable()
 export class AuthService {
   constructor(
     private readonly prismaService: PrismaService,
     private readonly jwtService: JwtService,
+    private readonly mailerSendService: MailerSendService,
   ) {}
 
   checkToken(token: string): TokenData {
@@ -85,7 +87,7 @@ export class AuthService {
             dateExpirationRecoveryHash: dateExpiration,
           },
         }),
-        // this.mailService.sendMailRecoverPassword(user, recoveryHash),
+        this.mailerSendService.mailResetPassword(user, recoveryHash),
       ]);
     }
 
@@ -107,7 +109,11 @@ export class AuthService {
     const encryptPassword = await bcrypt.hash(body.password, 10);
     await this.prismaService.user.update({
       where: { id: user.id },
-      data: { password: encryptPassword },
+      data: {
+        password: encryptPassword,
+        dateExpirationRecoveryHash: null,
+        recoveryHash: null,
+      },
     });
 
     return {

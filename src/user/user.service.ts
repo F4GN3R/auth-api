@@ -9,6 +9,12 @@ import { PrismaService } from 'src/database/prisma.service';
 import { User } from '@prisma/client';
 import * as bcrypt from 'bcrypt';
 
+const OMIT_USER_FIELDS = {
+  password: true,
+  recoveryHash: true,
+  dateExpirationRecoveryHash: true,
+};
+
 @Injectable()
 export class UserService {
   constructor(private readonly prismaService: PrismaService) {}
@@ -23,13 +29,13 @@ export class UserService {
     const encryptPassword = await bcrypt.hash(body.password, 10);
     return await this.prismaService.user.create({
       data: { ...body, password: encryptPassword },
-      omit: { password: true },
+      omit: OMIT_USER_FIELDS,
     });
   }
 
   async findMe(id: string): Promise<Partial<User>> {
     const user = await this.prismaService.user.findUnique({
-      omit: { password: true },
+      omit: OMIT_USER_FIELDS,
       where: { id },
     });
     if (!user) throw new NotFoundException('Usuário não encontrado.');
@@ -37,7 +43,7 @@ export class UserService {
   }
 
   async findAll(): Promise<Partial<User>[]> {
-    return await this.prismaService.user.findMany({ omit: { password: true } });
+    return await this.prismaService.user.findMany({ omit: OMIT_USER_FIELDS });
   }
 
   async update(id: string, body: UpdateUserDto): Promise<Partial<User>> {
@@ -46,7 +52,7 @@ export class UserService {
     return await this.prismaService.user.update({
       where: { id },
       data: body,
-      omit: { password: true },
+      omit: OMIT_USER_FIELDS,
     });
   }
 

@@ -5,9 +5,11 @@ import { AuthModule } from './auth/auth.module';
 import { APP_GUARD } from '@nestjs/core';
 import { AuthGuard } from './guards/auth.guard';
 import { RoleGuard } from './guards/role.guard';
+import { MailerSendModule } from './mailersend/mailersend.module';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
-  imports: [UserModule, AuthModule],
+  imports: [ConfigModule.forRoot(), UserModule, AuthModule, MailerSendModule],
   controllers: [AppController],
   providers: [
     { provide: APP_GUARD, useClass: AuthGuard },

@@ -1,32 +1,37 @@
-<!-- <p align="center">
-  <a href="http://nestjs.com/" target="blank" style="font-size: 5rem; color: white; font-family: 'Poppins, sans-serif';">Loggin</a>
-</p> -->
+<p align="center">
+  <h1>🔒 Auth API</h1>
 
-<!-- [circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+  <img alt="Version" src="https://img.shields.io/badge/version-1.0.0-blue.svg?cacheSeconds=2592000" />
+  <a href="https://www.npmjs.com/~nestjscore" target="_blank">
+    <img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" />
+  </a>
+</p>
 
-  <p align="center">API de autenticação e controle de acessos.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>  -->
+## Tópicos
 
-# Projeto: Sistema de Login com NestJS
+<ol>
+  <li><a href="#description"><a href="#description">Descrição</a></li>
+  <li><a href="#features">Funcionalidades</a></li>
+  <li><a href="#requirements">Requisitos</a></li>
+  <li><a href="#technologies-used">Tecnologias Utilizadas</a></li>
+  <li><a href="#installation-and-configuration">Instalação e Configuração</a></li>
+  <li><a href="#project-architecture">Arquitetura do Projeto</a></li>
+  <li><a href="#security">Segurança</a></li>
+  <li><a href="#tests">Testes</a></li>
+  <li><a href="#api-documentation">Documentação da API</a></li>
+  <li><a href="#production-environment">Ambiente de produção</a></li>
+  <li><a href="#contribution">Contribuição</a></li>
+  <li><a href="#license">Licença</a></li>
+  <li><a href="#future-expansion-points">Pontos de Expansão Futuros</a></li>
+  <li><a href="#estimated-schedule">Cronograma Estimado</a></li>
+  <li><a href="#author">Autor</a></li>
+</ol>
 
-## Descrição
+<h2 id="description">Descrição</h2>
 
-Este projeto implementa um sistema de login seguro utilizando **NestJS**. O sistema oferece funcionalidades de cadastro, autenticação via e-mail/senha, geração de tokens JWT, controle de acesso baseado em papéis (roles) e criptografia de senhas.
+Este projeto implementa regras de autenticação e autorização utilizando **NestJS**. O sistema oferece funcionalidades de cadastro, autenticação via e-mail/senha, geração de tokens JWT, controle de acesso baseado em papéis (roles), criptografia de senhas e recuperação de acesso por hash.
 
-## Funcionalidades
+<h2 id="features">Funcionalidades</h2>
 
 - **Gerenciamento de Usuário**: Permite o cadastro, edição, atualização e exclusão de usuários (CRUD).
 - **Login**: Autenticação via e-mail e senha.
@@ -34,7 +39,7 @@ Este projeto implementa um sistema de login seguro utilizando **NestJS**. O sist
 - **Recuperação de Senha**: Envio de e-mail para redefinição de senha.
 - **Controle de Acesso (Roles)**: Permissões diferenciadas por papéis (Admin, User).
 
-## Requisitos
+<h2 id="requirements">Requisitos</h2>
 
 ### Requisitos Funcionais
 
@@ -50,7 +55,7 @@ Este projeto implementa um sistema de login seguro utilizando **NestJS**. O sist
 - **Escalabilidade**: Capacidade de suportar múltiplos usuários simultâneos.
 - **Manutenibilidade**: Código modular, seguindo boas práticas (SOLID, Clean Code).
 
-## Tecnologias Utilizadas
+<h2 id="technologies-used">Tecnologias Utilizadas</h2>
 
 - **NestJS**: Framework principal.
 - **TypeScript**: Linguagem de programação.
@@ -58,52 +63,67 @@ Este projeto implementa um sistema de login seguro utilizando **NestJS**. O sist
 - **Bcrypt**: Para hashing de senhas.
 - **Prisma**: ORM para interação com banco de dados.
 - **PostgreSQL**: Banco de dados relacional.
+- **MailerSend**: Para envio de e-mails.
 - **Swagger**: Para documentação automática das APIs.
 - **Docker**: Para containerização do ambiente.
+- **Render**: Para ambiente de produção.
 
-## Instalação e Configuração
+<h2 id="installation-and-configuration">Instalação e Configuração</h2>
 
 ### Pré-requisitos
 
-- Node.js v20.17.0
-- Pnpm v9.11.0
-- DockerCompose v1.27.4
-- NestJS CLI v10.4.5
+- Node.js v20.17.0 ou superior
+- Pnpm
+- DockerCompose
+- NestJS CLI
 
 ### Passos para Instalação
 
 1. Clone o repositório:
 
 ```bash
-git clone https://github.com/usuario/sistema-login-nestjs.git
+git clone https://github.com/F4GN3R/auth-api
 ```
 
 2. Instale as dependências:
 
 ```bash
-$ cd sistema-login-nestjs && pnpm install
+$ cd auth-api && pnpm install
 ```
 
-3. Configure as variáveis de ambiente no arquivo `.env`:
+3. Executar instância do banco de dados:
 
 ```bash
-DATABASE_HOST=localhost
-DATABASE_PORT=5432
-DATABASE_USER=seu_usuario
-DATABASE_PASSWORD=sua_senha
-DATABASE_NAME=nome_do_banco
-JWT_SECRET=sua_chave_secretal
+$ docker-compose up
+```
+
+4. Configure as variáveis de ambiente no arquivo `.env`:
+
+```bash
+# DOCKER POSTGRESQL DATABASE
+DATABASE_URL="postgresql://postgres:321654@localhost:6500/auth-api?schema=public"
+
+# JWT
+JWT_SECRET=""
+
+# MAILERSEND
+MAILERSEND_API_KEY=""
+MAILERSEND_DOMAIN=""
+MAILERSEND_TEMPLATE_ID=""
+
+# WEBPAGE TO RESET PASSWORD
+RESET_PASSWORD_URL=""
 ```
 
 Para gerar o **JWT_SECRET** você pode utilizar o comando: `openssl rand -base64 32`
 
-4. Execute as migrações do banco de dados:
+5. Execute as migrações do banco de dados:
 
 ```bash
-$ pnpm run typeorm migration:run
+$ pnpm exec prisma migrate dev
 ```
 
-5. Inicie o servidor:
+6. Inicie o servidor:
 
 ```bash
 # development
@@ -116,7 +136,7 @@ $ pnpm run start:dev
 $ pnpm run start:prod
 ```
 
-## Arquitetura do Projeto
+<h2 id="project-architecture">Arquitetura do Projeto</h2>
 
 ### Estrutura Modular
 
@@ -124,7 +144,7 @@ O projeto é organizado em módulos para facilitar a manutenção e escalabilida
 
 - **AuthModule**: Gerencia a autenticação e geração de tokens JWT.
 - **UserModule**: Responsável pelo CRUD de usuários.
-- **RolesGuard**: Middleware para controle de acesso baseado em papéis.
+- **MailerSendModule**: Responsável pelo envio de usuários.
 
 ### Rotas Principais
 
@@ -139,7 +159,7 @@ O projeto é organizado em módulos para facilitar a manutenção e escalabilida
 - **PATCH /auth/reset-password**: Alteração de senha via hash.
 - **PATCH /auth/update-password**: Atualização de senha.
 
-## Segurança
+<h2 id="security">Segurança</h2>
 
 - **Hashing de Senhas**: As senhas são armazenadas utilizando `bcrypt`.
 - **Autenticação JWT**: As rotas protegidas utilizam tokens JWT para autenticação.
@@ -151,7 +171,7 @@ O projeto é organizado em módulos para facilitar a manutenção e escalabilida
   - Validação de entrada de dados para evitar injeções de SQL.
   - Proteção contra XSS e CSRF.
 
-## Testes
+<h2 id="tests">Testes</h2>
 
 - **Testes Unitários**: Para verificar a lógica de autenticação e criptografia.
 - **Testes de Integração**: Para garantir a interação correta entre os módulos (ex: login e geração de token).
@@ -170,15 +190,23 @@ $ pnpm run test:e2e
 $ pnpm run test:cov
 ```
 
-## Documentação da API
+<h2 id="api-documentation">Documentação da API</h2>
 
 A documentação da API está disponível através do **Swagger**. Para acessá-la, inicie o projeto e navegue para:
 
-```
-http://localhost:3000/api
+```bash
+http://localhost:3333/documentation
 ```
 
-## Contribuição
+<h2 id="production-environment">Ambiente de produção</h2>
+
+Para produção, escolhemos a plataforma [Render](https://render.com/) para publicar a API e o banco de dados.
+
+```bash
+https://auth-api-55xs.onrender.com/v1
+```
+
+<h2 id="contribution">Contribuição</h2>
 
 1. Faça um fork do projeto.
 2. Crie uma nova branch para a feature (`git checkout -b feature/nova-feature`).
@@ -186,40 +214,49 @@ http://localhost:3000/api
 4. Faça o push para a branch (`git push origin feature/nova-feature`).
 5. Abra um Pull Request.
 
-## Licença
+<h2 id="license">Licença</h2>
 
 Este projeto está licenciado sob a licença MIT - veja o arquivo [LICENSE](LICENSE) para mais detalhes.
 
-## Pontos de Expansão Futuros
+<h2 id="future-expansion-points">Pontos de Expansão Futuros</h2>
 
 - **Refresh Token**: Implementar um fluxo de refresh token para renovar o JWT.
 - **OAuth**: Integração com provedores de login social (Google, Facebook).
 - **Autenticação Multi-Fator (MFA)**: Adicionar uma camada extra de segurança.
 - **Logs de Acesso e Auditoria**: Registrar tentativas de login e outras ações críticas.
 
-## Cronograma Estimado
+<h2 id="estimated-schedule">Cronograma Estimado</h2>
 
 | Fase                       | Tempo Estimado |
 | -------------------------- | -------------- |
 | Levantamento de Requisitos | 2 dias         |
 | Configuração do Projeto    | 1 dia          |
-| Desenvolvimento Backend    | 5 dias         |
-| Implementação de Segurança | 3 dias         |
-| Testes e Correções         | 3 dias         |
+| Desenvolvimento Backend    | 2 dias         |
+| Implementação de Segurança | 2 dias         |
+| Testes e Correções         | 2 dias         |
 | Documentação               | 1 dia          |
+| Deploy em produção         | 1 dia          |
+| -------------------------- | -------------- |
+| Total estimado             | 11 dias        |
 
-## Autor
+<h2 id="author">Autor</h2>
 
-**Seu Nome**  
-[GitHub](https://github.com/seu_usuario) | [LinkedIn](https://www.linkedin.com/in/seu-usuario/)
+<table style="padding: none;">
+  <tr>
+    <td>
+      <a href="https://github.com/F4GN3R">
+        <img src="https://github.com/F4GN3R.png" width="60px" alt="F4GN3R" style="border-radius: 500%;"/>
+      </a>
+    </td>
+    <td>
+     <b>Fagner Morais</b>
+     <br/>
+    <small>Full Stack Developer and Senior System Analist</small>
+    </td>
+  </tr>
+</table>
 
-### Explicação dos Tópicos:
-
-- **Instalação e Configuração**: Instruções para clonar o repositório, instalar dependências e configurar variáveis de ambiente.
-- **Arquitetura do Projeto**: Resumo dos principais módulos e suas funções.
-- **Rotas Principais**: Lista das principais rotas implementadas no sistema de login.
-- **Segurança**: Detalhes sobre a segurança do sistema.
-- **Testes**: Explicação sobre a abordagem de testes (unitários, integração, segurança).
-- **Documentação da API**: Informações sobre como acessar a documentação gerada pelo Swagger.
+[![GitHub](https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/F4GN3R)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/fagner-morais-6732a7130/)
 
 Esse `README.md` serve como uma documentação completa do projeto e pode ser utilizado diretamente no GitHub.

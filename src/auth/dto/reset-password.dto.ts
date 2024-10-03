@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty } from 'class-validator';
+import { IsNotEmpty, IsString } from 'class-validator';
 
 export class ResetPasswordDto {
   @ApiProperty({
@@ -7,6 +7,7 @@ export class ResetPasswordDto {
     description: 'Hash de redefinição',
     required: true,
   })
+  @IsString({ message: 'O hash deve ser uma string.' })
   @IsNotEmpty({ message: 'O hash de redefinição de senha deve ser informada.' })
   hash: string;
 
@@ -15,6 +16,7 @@ export class ResetPasswordDto {
     description: 'Nova senha',
     required: true,
   })
+  @IsString({ message: 'A nova senha deve ser uma string.' })
   @IsNotEmpty({ message: 'A nova senha deve ser informada.' })
   password: string;
 }

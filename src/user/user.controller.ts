@@ -3,10 +3,10 @@ import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { UserRole } from 'src/decorators/role.decorator';
+import { UserRole } from '../decorators/role.decorator';
 import { Role } from '@prisma/client';
-import { LoggedUser } from 'src/decorators/logged-user.decorator';
-import { IsPublic } from 'src/decorators/is-public.decorator';
+import { LoggedUser } from '../decorators/logged-user.decorator';
+import { IsPublic } from '../decorators/is-public.decorator';
 
 @ApiTags('Usuários')
 @Controller({ version: '1', path: 'user' })

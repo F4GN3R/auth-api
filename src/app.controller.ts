@@ -11,6 +11,6 @@ export class AppController {
     summary: 'Verificar API operante.',
   })
   getAlive(): { message: string } {
-    return { message: '✅ API is running!' };
+    return { message: 'API is running!' };
   }
 }

@@ -1,7 +1,10 @@
 import { Role } from '@prisma/client';
 
-export class Auth {
+export class AuthResponse {
   message: string;
+}
+
+export class SignInResponse extends AuthResponse {
   accessToken: string;
 }
 

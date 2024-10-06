@@ -5,6 +5,7 @@ import {
   IsIn,
   IsNotEmpty,
   IsOptional,
+  IsString,
   MaxLength,
   MinLength,
 } from 'class-validator';
@@ -20,6 +21,7 @@ export class CreateUserDto {
   })
   @MinLength(3, { message: 'O nome deve possuir no mínimo 3 caracteres.' })
   @MaxLength(150, { message: 'O nome deve possuir no máximo 150 caracteres.' })
+  @IsString({ message: 'O nome deve ser uma string.' })
   @IsNotEmpty({ message: 'O nome deve ser informado.' })
   name: string;
 
@@ -30,6 +32,7 @@ export class CreateUserDto {
     example: 'john.doe@gmail.com.br',
   })
   @IsEmail({}, { message: 'O e-mail não é válido.' })
+  @IsString({ message: 'O e-mail deve ser uma string.' })
   @IsNotEmpty({ message: 'O e-mail deve ser informado.' })
   email: string;
 
@@ -42,6 +45,7 @@ export class CreateUserDto {
   })
   @MinLength(8, { message: 'A senha deve possuir no mínimo 8 caracteres.' })
   @MaxLength(20, { message: 'A senha deve possuir no máximo 20 caracteres.' })
+  @IsString({ message: 'A senha deve ser uma string.' })
   @IsNotEmpty({ message: 'A senha deve ser informada.' })
   password: string;
 

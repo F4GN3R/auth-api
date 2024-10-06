@@ -3,17 +3,21 @@ import {
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
-import { PrismaService } from 'src/database/prisma.service';
+import { PrismaService } from '../database/prisma.service';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
-import { Auth, TokenData } from './entities/auth.entity';
+import {
+  AuthResponse,
+  SignInResponse,
+  TokenData,
+} from './entities/auth.entity';
 import { randomUUID } from 'crypto';
 import { AccountRecoveryDto } from './dto/account-recovery.dto';
 import { UpdatePasswordDto } from './dto/update-password.dto';
 import { SingInDto } from './dto/sign-in.dto';
 import { ResetPasswordDto } from './dto/reset-password.dto';
 import { User } from '@prisma/client';
-import { MailerSendService } from 'src/mailersend/mailersend.service';
+import { MailerSendService } from '../mailersend/mailersend.service';
 
 @Injectable()
 export class AuthService {
@@ -32,7 +36,7 @@ export class AuthService {
     return this.jwtService.sign({ sub: id, name, email, role });
   }
 
-  async singIn(body: SingInDto): Promise<Auth> {
+  async singIn(body: SingInDto): Promise<SignInResponse> {
     const user = await this.prismaService.user.findUnique({
       where: { email: body.email },
     });
@@ -51,7 +55,7 @@ export class AuthService {
   async updatePassword(
     id: string,
     body: UpdatePasswordDto,
-  ): Promise<{ message: string }> {
+  ): Promise<AuthResponse> {
     const user = await this.prismaService.user.findUnique({ where: { id } });
     if (!user) throw new UnauthorizedException('Senha incorreta.');
 
@@ -67,9 +71,7 @@ export class AuthService {
     return { message: 'Senha alterada com sucesso.' };
   }
 
-  async accountRecovery(
-    body: AccountRecoveryDto,
-  ): Promise<{ message: string }> {
+  async accountRecovery(body: AccountRecoveryDto): Promise<AuthResponse> {
     const user = await this.prismaService.user.findUnique({
       where: { email: body.email },
     });
@@ -96,7 +98,7 @@ export class AuthService {
     };
   }
 
-  async resetPassword(body: ResetPasswordDto): Promise<Auth> {
+  async resetPassword(body: ResetPasswordDto): Promise<SignInResponse> {
     const user = await this.prismaService.user.findUnique({
       where: { recoveryHash: body.hash },
     });

@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsEmail, IsNotEmpty } from 'class-validator';
+import { IsEmail, IsNotEmpty, IsString } from 'class-validator';
 
 export class SingInDto {
   @ApiProperty({
@@ -9,6 +9,7 @@ export class SingInDto {
     example: 'john.doe@gmail.com.br',
   })
   @IsEmail({}, { message: 'O e-mail não é válido.' })
+  @IsString({ message: 'O e-mail deve ser uma string.' })
   @IsNotEmpty({ message: 'O e-mail deve ser informado.' })
   email: string;
 
@@ -17,6 +18,7 @@ export class SingInDto {
     description: 'Senha',
     required: true,
   })
+  @IsString({ message: 'A senha deve ser uma string.' })
   @IsNotEmpty({ message: 'A senha deve ser informada.' })
   password: string;
 }

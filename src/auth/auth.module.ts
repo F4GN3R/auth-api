@@ -1,13 +1,13 @@
 import { Module } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
-import { PrismaModule } from 'src/database/prisma.module';
 import { JwtModule } from '@nestjs/jwt';
 import { MailerSendModule } from 'src/mailersend/mailersend.module';
+import { UserRepository } from 'src/user/repositories/user.repository';
+import { PrismaUserRepository } from 'src/user/repositories/prisma/prisma-user.repository';
 
 @Module({
   imports: [
-    PrismaModule,
     MailerSendModule,
     JwtModule.register({
       secret: process.env.JWT_SECRET,
@@ -15,7 +15,13 @@ import { MailerSendModule } from 'src/mailersend/mailersend.module';
     }),
   ],
   controllers: [AuthController],
-  providers: [AuthService],
+  providers: [
+    AuthService,
+    {
+      provide: UserRepository,
+      useClass: PrismaUserRepository,
+    },
+  ],
   exports: [AuthService],
 })
 export class AuthModule {}

@@ -5,60 +5,44 @@ import {
 } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { PrismaService } from '../database/prisma.service';
 import { User } from '@prisma/client';
 import * as bcrypt from 'bcrypt';
-
-const OMIT_USER_FIELDS = {
-  password: true,
-  recoveryHash: true,
-  dateExpirationRecoveryHash: true,
-};
+import { UserRepository } from './repositories/user.repository';
 
 @Injectable()
 export class UserService {
-  constructor(private readonly prismaService: PrismaService) {}
+  constructor(private readonly userRepository: UserRepository) {}
 
   async create(body: CreateUserDto): Promise<Partial<User>> {
-    const user = await this.prismaService.user.findUnique({
-      where: { email: body.email },
-    });
-
+    const user = await this.userRepository.findByEmail(body.email);
     if (user) throw new BadRequestException('Usuário já cadastrado.');
 
     const encryptPassword = await bcrypt.hash(body.password, 10);
-    return await this.prismaService.user.create({
-      data: { ...body, password: encryptPassword },
-      omit: OMIT_USER_FIELDS,
+    return await this.userRepository.create({
+      ...body,
+      password: encryptPassword,
     });
   }
 
   async findMe(id: string): Promise<Partial<User>> {
-    const user = await this.prismaService.user.findUnique({
-      omit: OMIT_USER_FIELDS,
-      where: { id },
-    });
+    const user = await this.userRepository.findMe(id);
     if (!user) throw new NotFoundException('Usuário não encontrado.');
     return user;
   }
 
   async findAll(): Promise<Partial<User>[]> {
-    return await this.prismaService.user.findMany({ omit: OMIT_USER_FIELDS });
+    return await this.userRepository.findAll();
   }
 
   async update(id: string, body: UpdateUserDto): Promise<Partial<User>> {
-    const user = await this.prismaService.user.findUnique({ where: { id } });
+    const user = await this.userRepository.findById(id);
     if (!user) throw new NotFoundException('Usuário não encontrado.');
-    return await this.prismaService.user.update({
-      where: { id },
-      data: body,
-      omit: OMIT_USER_FIELDS,
-    });
+    return await this.userRepository.update(id, body);
   }
 
   async remove(id: string): Promise<void> {
-    const user = await this.prismaService.user.findUnique({ where: { id } });
+    const user = await this.userRepository.findById(id);
     if (!user) throw new NotFoundException('Usuário não encontrado.');
-    await this.prismaService.user.delete({ where: { id } });
+    await this.userRepository.remove(id);
   }
 }

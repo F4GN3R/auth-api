@@ -1,11 +1,4 @@
-<h1 style='text-align: center;'>🔒 Auth API</h1>
-<p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
- <a href="https://github.com/F4GN3R/auth-api/blob/main/LICENSE.md" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
- <img src="https://img.shields.io/github/stars/F4GN3R/auth-api" alt="Coverage" /></a>
-</p>
-
-## Tópicos
+<h1>🔒 Auth API</h1>
 
 <ol>
   <li><a href="#description"><a href="#description">Descrição</a></li>
@@ -138,7 +131,7 @@ $ pnpm run start:prod
 
 ### Banco de dados
 
-<img src="https://github.com/F4GN3R/auth-api/prisma/ERD.png" alt="ERD Database" />
+<img src="https://github.com/F4GN3R/auth-api/blob/main/prisma/ERD.png?raw=true" alt="ERD Database" />
 
 ### Estrutura Modular
 

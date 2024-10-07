@@ -6,6 +6,11 @@ generator client {
   previewFeatures = ["omitApi"]
 }
 
+generator erd {
+  provider = "prisma-erd-generator"
+  output   = "./ERD.png"
+}
+
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")

@@ -1,10 +1,8 @@
+<h1 style='text-align: center;'>🔒 Auth API</h1>
 <p align="center">
-  <h1>🔒 Auth API</h1>
-
-  <img alt="Version" src="https://img.shields.io/badge/version-1.0.0-blue.svg?cacheSeconds=2592000" />
-  <a href="https://www.npmjs.com/~nestjscore" target="_blank">
-    <img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" />
-  </a>
+<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
+ <a href="https://github.com/F4GN3R/auth-api/blob/main/LICENSE.md" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
+ <img src="https://img.shields.io/github/stars/F4GN3R/auth-api" alt="Coverage" /></a>
 </p>
 
 ## Tópicos
@@ -72,7 +70,7 @@ Este projeto implementa regras de autenticação e autorização utilizando **Ne
 
 ### Pré-requisitos
 
-- Node.js v20.17.0 ou superior
+- Node.js
 - Pnpm
 - DockerCompose
 - NestJS CLI
@@ -137,6 +135,10 @@ $ pnpm run start:prod
 ```
 
 <h2 id="project-architecture">Arquitetura do Projeto</h2>
+
+### Banco de dados
+
+<img src="https://github.com/F4GN3R/auth-api/prisma/ERD.png" alt="ERD Database" />
 
 ### Estrutura Modular
 

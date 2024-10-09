@@ -3,7 +3,6 @@ import {
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
-import { PrismaService } from '../database/prisma.service';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 import {
@@ -18,11 +17,12 @@ import { SingInDto } from './dto/sign-in.dto';
 import { ResetPasswordDto } from './dto/reset-password.dto';
 import { User } from '@prisma/client';
 import { MailerSendService } from '../mailersend/mailersend.service';
+import { UserRepository } from '../user/repositories/user.repository';
 
 @Injectable()
 export class AuthService {
   constructor(
-    private readonly prismaService: PrismaService,
+    private readonly userRepository: UserRepository,
     private readonly jwtService: JwtService,
     private readonly mailerSendService: MailerSendService,
   ) {}
@@ -37,44 +37,34 @@ export class AuthService {
   }
 
   async singIn(body: SingInDto): Promise<SignInResponse> {
-    const user = await this.prismaService.user.findUnique({
-      where: { email: body.email },
-    });
+    const user = await this.userRepository.findByEmail(body.email);
     if (!user) throw new UnauthorizedException('E-mail e/ou senha incorretos.');
 
     const validPassword = await bcrypt.compare(body.password, user.password);
     if (!validPassword)
       throw new UnauthorizedException('E-mail e/ou senha incorretos.');
 
-    return {
-      accessToken: this.generateJwt(user),
-      message: 'Usuário autenticado com sucesso.',
-    };
+    const accessToken = await this.generateJwt(user);
+    return { accessToken, message: 'Usuário autenticado com sucesso.' };
   }
 
   async updatePassword(
     id: string,
     body: UpdatePasswordDto,
   ): Promise<AuthResponse> {
-    const user = await this.prismaService.user.findUnique({ where: { id } });
+    const user = await this.userRepository.findById(id);
     if (!user) throw new UnauthorizedException('Senha incorreta.');
 
     const validPassword = await bcrypt.compare(body.password, user.password);
     if (!validPassword) throw new UnauthorizedException('Senha incorreta.');
 
     const encryptPassword = await bcrypt.hash(body.newPassword, 10);
-    await this.prismaService.user.update({
-      where: { id },
-      data: { password: encryptPassword },
-    });
-
+    await this.userRepository.updatePassword(id, encryptPassword);
     return { message: 'Senha alterada com sucesso.' };
   }
 
   async accountRecovery(body: AccountRecoveryDto): Promise<AuthResponse> {
-    const user = await this.prismaService.user.findUnique({
-      where: { email: body.email },
-    });
+    const user = await this.userRepository.findByEmail(body.email);
 
     if (user) {
       const recoveryHash = randomUUID();
@@ -82,13 +72,7 @@ export class AuthService {
       dateExpiration.setHours(dateExpiration.getHours() + 1);
 
       await Promise.all([
-        this.prismaService.user.update({
-          where: { id: user.id },
-          data: {
-            recoveryHash,
-            dateExpirationRecoveryHash: dateExpiration,
-          },
-        }),
+        this.userRepository.updateHash(user.id, recoveryHash, dateExpiration),
         this.mailerSendService.mailResetPassword(user, recoveryHash),
       ]);
     }
@@ -99,28 +83,16 @@ export class AuthService {
   }
 
   async resetPassword(body: ResetPasswordDto): Promise<SignInResponse> {
-    const user = await this.prismaService.user.findUnique({
-      where: { recoveryHash: body.hash },
-    });
-
+    const user = await this.userRepository.findByHash(body.hash);
     if (!user) throw new BadRequestException('Link de recuperação inválido.');
 
     if (user.dateExpirationRecoveryHash <= new Date())
       throw new BadRequestException('Link de recuperação expirado.');
 
     const encryptPassword = await bcrypt.hash(body.password, 10);
-    await this.prismaService.user.update({
-      where: { id: user.id },
-      data: {
-        password: encryptPassword,
-        dateExpirationRecoveryHash: null,
-        recoveryHash: null,
-      },
-    });
+    await this.userRepository.updatePassword(user.id, encryptPassword);
 
-    return {
-      accessToken: this.generateJwt(user),
-      message: 'Senha alterada com sucesso.',
-    };
+    const accessToken = await this.generateJwt(user);
+    return { accessToken, message: 'Senha alterada com sucesso.' };
   }
 }

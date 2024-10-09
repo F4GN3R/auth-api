@@ -1,11 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { UserController } from '../user.controller';
 import { UserService } from '../user.service';
-import {
-  createUserBodyMock,
-  updateUserBodyMock,
-  userResponseMock,
-} from './mocks';
+import { createUserBodyMock, updateUserBodyMock, userMock } from './mocks';
 
 describe('UserController', () => {
   let userController: UserController;
@@ -18,10 +14,10 @@ describe('UserController', () => {
         {
           provide: UserService,
           useValue: {
-            create: jest.fn().mockResolvedValue(userResponseMock),
-            findMe: jest.fn().mockResolvedValue(userResponseMock),
-            findAll: jest.fn().mockResolvedValue([userResponseMock]),
-            update: jest.fn().mockResolvedValue(userResponseMock),
+            create: jest.fn().mockResolvedValue(userMock),
+            findMe: jest.fn().mockResolvedValue(userMock),
+            findAll: jest.fn().mockResolvedValue([userMock]),
+            update: jest.fn().mockResolvedValue(userMock),
             remove: jest.fn().mockResolvedValue(null),
           },
         },
@@ -40,7 +36,7 @@ describe('UserController', () => {
   describe('create', () => {
     it('should return the new user created', async () => {
       const response = await userController.create(createUserBodyMock);
-      expect(response).toEqual(userResponseMock);
+      expect(response).toEqual(userMock);
       expect(userService.create).toHaveBeenCalledTimes(1);
       expect(userService.create).toHaveBeenCalledWith(createUserBodyMock);
     });
@@ -54,7 +50,7 @@ describe('UserController', () => {
   describe('findMe', () => {
     it('must return a user', async () => {
       const response = await userController.findMe('1');
-      expect(response).toEqual(userResponseMock);
+      expect(response).toEqual(userMock);
       expect(userService.findMe).toHaveBeenCalledTimes(1);
       expect(userService.findMe).toHaveBeenCalledWith('1');
     });
@@ -68,7 +64,7 @@ describe('UserController', () => {
   describe('findAll', () => {
     it('should return a list of users', async () => {
       const response = await userController.findAll();
-      expect(response).toEqual([userResponseMock]);
+      expect(response).toEqual([userMock]);
       expect(userService.findAll).toHaveBeenCalledTimes(1);
     });
 
@@ -81,14 +77,14 @@ describe('UserController', () => {
   describe('update', () => {
     it('must return a user', async () => {
       const response = await userController.update('1', updateUserBodyMock);
-      expect(response).toEqual(userResponseMock);
+      expect(response).toEqual(userMock);
       expect(userService.update).toHaveBeenCalledTimes(1);
       expect(userService.update).toHaveBeenCalledWith('1', updateUserBodyMock);
     });
 
     it('should throw an exception', () => {
       jest.spyOn(userService, 'update').mockRejectedValueOnce(new Error());
-      expect(userController.update('1', userResponseMock)).rejects.toThrow();
+      expect(userController.update('1', userMock)).rejects.toThrow();
     });
   });
 

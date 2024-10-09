@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { UserRepository } from '../user.repository';
 import { User } from '@prisma/client';
-import { CreateUserDto } from 'src/user/dto/create-user.dto';
-import { UpdateUserDto } from 'src/user/dto/update-user.dto';
-import { PrismaService } from 'src/database/prisma.service';
+import { CreateUserDto } from '../../dto/create-user.dto';
+import { UpdateUserDto } from '../../dto/update-user.dto';
+import { PrismaService } from '../../../database/prisma.service';
 
 const OMIT_USER_FIELDS = {
   password: true,

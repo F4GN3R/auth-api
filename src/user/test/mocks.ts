@@ -16,7 +16,7 @@ const updateUserBodyMock: UpdateUserDto = {
 
 // response mock data
 
-const userResponseMock: Partial<User> = {
+const userMock: Partial<User> = {
   id: '1',
   name: 'John',
   email: 'john.doe@gmail.com',
@@ -25,4 +25,16 @@ const userResponseMock: Partial<User> = {
   updatedAt: new Date(),
 };
 
-export { createUserBodyMock, updateUserBodyMock, userResponseMock };
+const fullUserMock: User = {
+  id: '1',
+  name: 'John',
+  email: 'john.doe@gmail.com',
+  role: 'USER',
+  password: 'd5e9bd0fdbe0586be8b8597c1fd3a3c',
+  dateExpirationRecoveryHash: null,
+  recoveryHash: null,
+  createdAt: new Date(),
+  updatedAt: new Date(),
+};
+
+export { createUserBodyMock, updateUserBodyMock, userMock, fullUserMock };

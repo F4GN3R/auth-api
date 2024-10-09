@@ -17,7 +17,7 @@ import { SingInDto } from './dto/sign-in.dto';
 import { ResetPasswordDto } from './dto/reset-password.dto';
 import { User } from '@prisma/client';
 import { MailerSendService } from '../mailersend/mailersend.service';
-import { UserRepository } from 'src/user/repositories/user.repository';
+import { UserRepository } from '../user/repositories/user.repository';
 
 @Injectable()
 export class AuthService {
@@ -44,10 +44,8 @@ export class AuthService {
     if (!validPassword)
       throw new UnauthorizedException('E-mail e/ou senha incorretos.');
 
-    return {
-      accessToken: this.generateJwt(user),
-      message: 'Usuário autenticado com sucesso.',
-    };
+    const accessToken = await this.generateJwt(user);
+    return { accessToken, message: 'Usuário autenticado com sucesso.' };
   }
 
   async updatePassword(
@@ -94,9 +92,7 @@ export class AuthService {
     const encryptPassword = await bcrypt.hash(body.password, 10);
     await this.userRepository.updatePassword(user.id, encryptPassword);
 
-    return {
-      accessToken: this.generateJwt(user),
-      message: 'Senha alterada com sucesso.',
-    };
+    const accessToken = await this.generateJwt(user);
+    return { accessToken, message: 'Senha alterada com sucesso.' };
   }
 }

@@ -1,3 +1,4 @@
+import { User } from '@prisma/client';
 import { AccountRecoveryDto } from '../dto/account-recovery.dto';
 import { ResetPasswordDto } from '../dto/reset-password.dto';
 import { SingInDto } from '../dto/sign-in.dto';
@@ -27,6 +28,18 @@ const resetPasswordBodyMock: ResetPasswordDto = {
 
 // response mock data
 
+const fullUserMock: User = {
+  id: '1',
+  name: 'John',
+  email: 'john.doe@gmail.com',
+  role: 'USER',
+  password: '$2b$10$m7XSi5JZxOIWSbYiRhAqhuNypvHRF95STlVfkfR5DHhXLBY4Txpoq',
+  dateExpirationRecoveryHash: new Date('2100-01-01T00:00:00.000Z'),
+  recoveryHash: null,
+  createdAt: new Date(),
+  updatedAt: new Date(),
+};
+
 const authResponseMock: AuthResponse = {
   message: 'Usuário autenticado com sucesso.',
 };
@@ -36,11 +49,18 @@ const signInResponseMock: SignInResponse = {
   ...authResponseMock,
 };
 
+const resetPasswordResponseMock: SignInResponse = {
+  ...signInResponseMock,
+  message: 'Senha alterada com sucesso.',
+};
+
 export {
   signInBodyMock,
   updatePasswordBodyMock,
   accountRecoveryBodyMock,
   resetPasswordBodyMock,
+  fullUserMock,
   authResponseMock,
   signInResponseMock,
+  resetPasswordResponseMock,
 };

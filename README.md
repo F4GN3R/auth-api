@@ -141,6 +141,13 @@ O projeto é organizado em módulos para facilitar a manutenção e escalabilida
 - **UserModule**: Responsável pelo CRUD de usuários.
 - **MailerSendModule**: Responsável pelo envio de usuários.
 
+### Repository Pattern
+
+Permite um encapsulamento da lógica de acesso aos dados, impulsionando o uso da injeção de dependencia (DI) e proporcionando uma visão mais orientada a objetos.
+
+- **UserRepository**: Define os métodos disponíveis do repositório de usuários.
+- **PrismaUserRepository**: Implementa os métodos do repositório de usuários com Prisma ORM.
+
 ### Rotas Principais
 
 - **GET /alive**: Verificação de serviço disponível.
